@@ -61,6 +61,11 @@ def main() -> int:
         print("缺少 NTFY_TOPIC")
         return 1
 
+    if os.environ.get("TEST_NOTIFY") == "true":
+        notify("ちいかわ 測試通知", "補貨監控推播正常運作中 ✅", f"{BASE}/collections/newitems")
+        print("已送出測試通知")
+        return 0
+
     old = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
     new = dict(old)
     newly_available = []

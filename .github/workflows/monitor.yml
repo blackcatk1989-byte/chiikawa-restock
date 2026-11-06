@@ -4,7 +4,12 @@ on:
   schedule:
     # 每 5 分鐘一次，UTC 0:00–10:55 = 台北時間 8:00–18:55
     - cron: "*/5 0-10 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      test_notify:
+        description: "只送一則測試推播"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -27,6 +32,7 @@ jobs:
       - name: Check stock
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TEST_NOTIFY: ${{ inputs.test_notify }}
         run: python monitor.py
 
       - name: Save state
